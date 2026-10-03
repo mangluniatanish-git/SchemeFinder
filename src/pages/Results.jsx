@@ -8,6 +8,7 @@ import { CATEGORIES } from '../data/schemes'
 import SchemeCard from '../components/SchemeCard'
 import FilterBar from '../components/FilterBar'
 import AnimatedCounter from '../components/AnimatedCounter'
+import DiscoveryStepper from '../components/DiscoveryStepper'
 
 function buildProfileSummary(profile) {
   if (!profile) return null
@@ -40,6 +41,16 @@ export default function Results() {
   return (
     <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#111814] text-[#1e2421] dark:text-[#f3f5f4] transition-colors duration-200">
       <div className="max-w-5xl mx-auto px-4 py-8">
+
+        {/* ── DISCOVERY STEPPER BAR (STEP 3 COMPLETED) ── */}
+        <div className="mb-8">
+          <DiscoveryStepper
+            currentStep={3}
+            isStep1Done={true}
+            isStep2Done={!!profile}
+            isStep3Done={true}
+          />
+        </div>
 
         {/* Header */}
         <div className="mb-6">

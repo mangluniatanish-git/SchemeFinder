@@ -77,6 +77,19 @@ const INTEREST_KEYWORDS = {
 
 const DISABILITY_KEYWORDS = ['disabled', 'disability', 'differently abled', 'handicapped', 'wheelchair', 'blind', 'deaf', 'विकलांग', 'दिव्यांग', 'अपंग']
 
+// Helper to safely match keywords with word boundaries for ASCII/Latin terms to avoid false positives
+// (e.g. 'st' should not match 'studying' or 'rajasthan', 'he' should not match 'the' or 'where')
+function matchesKeyword(text, keyword) {
+  if (!text || !keyword) return false
+  // For non-ASCII (Hindi / Devnagari), substring match is used
+  if (/[^\x00-\x7F]/.test(keyword)) {
+    return text.includes(keyword)
+  }
+  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const regex = new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, 'i')
+  return regex.test(text)
+}
+
 // ─── Main Parser ────────────────────────────────────────────────────────────
 export function parseProfile(text) {
   if (!text || text.trim().length < 10) return null
@@ -120,7 +133,7 @@ export function parseProfile(text) {
   // Then English state names
   if (!result.state) {
     for (const state of INDIAN_STATES) {
-      if (lower.includes(state.toLowerCase())) { result.state = state; break }
+      if (matchesKeyword(lower, state.toLowerCase())) { result.state = state; break }
     }
   }
 
@@ -129,7 +142,7 @@ export function parseProfile(text) {
     'Ahmedabad', 'Jaipur', 'Surat', 'Lucknow', 'Kanpur', 'Nagpur', 'Indore', 'Thane',
     'Bhopal', 'Visakhapatnam', 'Patna', 'Agra', 'Vadodara', 'Nashik', 'Varanasi']
   for (const city of cityList) {
-    if (lower.includes(city.toLowerCase())) { result.city = city; break }
+    if (matchesKeyword(lower, city.toLowerCase())) { result.city = city; break }
   }
   // Hindi city names
   const hindiCities = { 'मुंबई': 'Mumbai', 'पुणे': 'Pune', 'दिल्ली': 'Delhi', 'जयपुर': 'Jaipur', 'लखनऊ': 'Lucknow' }
@@ -157,14 +170,14 @@ export function parseProfile(text) {
     }
   }
   // Also detect BPL/below poverty line
-  if (!result.income && (lower.includes('bpl') || lower.includes('below poverty') || lower.includes('गरीबी रेखा'))) {
+  if (!result.income && (matchesKeyword(lower, 'bpl') || lower.includes('below poverty') || lower.includes('गरीबी रेखा'))) {
     result.income = 'Below poverty line'
     result.incomeValue = 0.5
   }
 
   // ── Occupation ───────────────────────────────────────────────────────────
   for (const [occ, keywords] of Object.entries(OCCUPATION_KEYWORDS)) {
-    if (keywords.some(k => lower.includes(k))) {
+    if (keywords.some(k => matchesKeyword(lower, k))) {
       result.occupation = occ
       break
     }
@@ -172,7 +185,7 @@ export function parseProfile(text) {
 
   // ── Education ─────────────────────────────────────────────────────────────
   for (const [level, keywords] of Object.entries(EDUCATION_KEYWORDS)) {
-    if (keywords.some(k => lower.includes(k))) {
+    if (keywords.some(k => matchesKeyword(lower, k))) {
       result.education = level
       // Don't break — take highest level found
       if (level === 'phd') break
@@ -181,27 +194,27 @@ export function parseProfile(text) {
 
   // ── Category ─────────────────────────────────────────────────────────────
   for (const [cat, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
-    if (keywords.some(k => lower.includes(k))) {
+    if (keywords.some(k => matchesKeyword(lower, k))) {
       result.category = cat
       break
     }
   }
 
   // ── Gender ────────────────────────────────────────────────────────────────
-  const maleScore = GENDER_KEYWORDS.male.filter(k => lower.includes(k)).length
-  const femaleScore = GENDER_KEYWORDS.female.filter(k => lower.includes(k)).length
+  const maleScore = GENDER_KEYWORDS.male.filter(k => matchesKeyword(lower, k)).length
+  const femaleScore = GENDER_KEYWORDS.female.filter(k => matchesKeyword(lower, k)).length
   if (femaleScore > maleScore) result.gender = 'Female'
   else if (maleScore > femaleScore) result.gender = 'Male'
 
   // ── Disability ────────────────────────────────────────────────────────────
-  if (DISABILITY_KEYWORDS.some(k => lower.includes(k))) {
+  if (DISABILITY_KEYWORDS.some(k => matchesKeyword(lower, k))) {
     result.disability = 'Yes'
   }
 
   // ── Interests ─────────────────────────────────────────────────────────────
   const interests = []
   for (const [interest, keywords] of Object.entries(INTEREST_KEYWORDS)) {
-    if (keywords.some(k => lower.includes(k))) {
+    if (keywords.some(k => matchesKeyword(lower, k))) {
       interests.push(interest)
     }
   }

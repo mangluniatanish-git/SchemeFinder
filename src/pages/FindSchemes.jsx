@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { X, ChevronRight, Info, Mic, MicOff, Upload, FileText, AlertCircle, CheckCircle2, User, Sparkles, Loader2 } from 'lucide-react'
+import { X, ChevronRight, Info, Mic, MicOff, Upload, FileText, AlertCircle, CheckCircle2, User, Sparkles, Loader2, Check } from 'lucide-react'
 import { useLang } from '../context/LanguageContext'
 import { useProfile } from '../context/ProfileContext'
 import { parseProfile } from '../utils/profileParser'
 import ProfileChips from '../components/ProfileChips'
+import DiscoveryStepper from '../components/DiscoveryStepper'
 import { SAMPLE_PROFILES } from '../data/sampleProfiles'
 
 const EXAMPLE_EN = `I am a 22-year-old student from Mumbai, Maharashtra studying B.Tech Computer Engineering. My family's annual income is around ₹3.5 lakh per year. I belong to the OBC category and I am interested in scholarships and skill development opportunities.`
@@ -222,77 +223,43 @@ export default function FindSchemes() {
   const loadingSteps = lang === 'hi'
     ? [
         { title: 'आपकी भाषा और विवरण का विश्लेषण...', sub: 'Reading text input' },
-        { title: 'आयु, राज्य, श्रेणी और आय निकालना...', sub: 'Structuring profile attributes' },
-        { title: '500+ आधिकारिक योजनाओं से मिलान...', sub: 'Cross-referencing scheme criteria' }
+        { title: 'आयु, राज्य, श्रेणी और आय निकालना...', sub: 'Structuring profile attributes' }
       ]
     : [
         { title: 'Analyzing your language and text description...', sub: 'Reading citizen input' },
-        { title: 'Extracting age, state, category & income...', sub: 'Structuring profile attributes' },
-        { title: 'Cross-referencing 500+ official scheme databases...', sub: 'Identifying eligibility matches' }
+        { title: 'Extracting age, state, category & income...', sub: 'Structuring profile attributes' }
       ]
+
+  // Check whether the profile currently has any active attributes
+  const FIELD_KEYS = ['age', 'gender', 'state', 'city', 'income', 'occupation', 'education', 'category', 'disability', 'interests']
+  const extractedCount = extracted
+    ? FIELD_KEYS.reduce((acc, key) => {
+        const val = extracted[key]
+        if (Array.isArray(val)) return acc + (val.length > 0 ? 1 : 0)
+        return acc + (val !== null && val !== undefined && val !== '' ? 1 : 0)
+      }, 0)
+    : 0
+
+  const hasExtractedAttributes = extractedCount > 0
+  const hasInput = (text && text.trim().length > 0) || (activeTab === 'voice' && voice.transcript?.trim().length > 0) || uploadFile !== null || Object.values(formData).some(v => v !== '' && v !== null && v !== undefined)
+
+  // Step 1 is completed if input is entered or we moved past input
+  const isStep1Complete = phase !== 'input' ? (hasInput || hasExtractedAttributes) : false
+  // Step 2 is completed only if there are actually extracted attributes present
+  const isStep2Complete = phase === 'result' && hasExtractedAttributes
 
   return (
     <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#111814] text-[#1e2421] dark:text-[#f3f5f4] transition-colors duration-200">
       <div className="max-w-2xl mx-auto px-4 py-8 sm:py-10">
 
-        {/* ── ANIMATED DISCOVERY STEPPER BAR ── */}
-        <div className="mb-8 bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-2xl p-4 shadow-xs">
-          <div className="flex items-center justify-between relative">
-            {/* Background connection line */}
-            <div className="absolute top-1/2 left-8 right-8 -translate-y-1/2 h-1 bg-[#CBCBCB]/50 dark:bg-[#2a3830] -z-0" />
-            
-            {/* Active filled connection line */}
-            <div
-              className="absolute top-1/2 left-8 -translate-y-1/2 h-1 bg-gradient-to-r from-[#174D38] to-emerald-500 transition-all duration-500 -z-0"
-              style={{
-                width: phase === 'input' ? '0%' : phase === 'loading' ? '50%' : '80%'
-              }}
-            />
-
-            {/* Step 1 indicator */}
-            <div className="flex flex-col items-center relative z-10">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                phase === 'input'
-                  ? 'bg-[#174D38] text-white ring-4 ring-[#174D38]/20 scale-110 shadow-md'
-                  : 'bg-emerald-600 text-white'
-              }`}>
-                {phase !== 'input' ? '✓' : '1'}
-              </div>
-              <span className={`text-[11px] font-semibold mt-1.5 ${phase === 'input' ? 'text-[#174D38] dark:text-emerald-400' : 'text-[#1e2421]/60 dark:text-slate-400'}`}>
-                {lang === 'hi' ? '1. विवरण' : '1. Profile'}
-              </span>
-            </div>
-
-            {/* Step 2 indicator */}
-            <div className="flex flex-col items-center relative z-10">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                phase === 'loading'
-                  ? 'bg-[#174D38] text-white ring-4 ring-[#174D38]/30 scale-110 animate-pulse'
-                  : phase === 'result'
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-white dark:bg-[#1a231e] text-[#1e2421]/50 dark:text-slate-500 border border-[#CBCBCB] dark:border-[#2a3830]'
-              }`}>
-                {phase === 'result' ? '✓' : '2'}
-              </div>
-              <span className={`text-[11px] font-semibold mt-1.5 ${phase === 'loading' ? 'text-[#174D38] dark:text-emerald-400 font-bold' : 'text-[#1e2421]/60 dark:text-slate-400'}`}>
-                {lang === 'hi' ? '2. समझ' : '2. Understand'}
-              </span>
-            </div>
-
-            {/* Step 3 indicator */}
-            <div className="flex flex-col items-center relative z-10">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                phase === 'result'
-                  ? 'bg-[#174D38] text-white ring-4 ring-[#174D38]/20 scale-110 shadow-md'
-                  : 'bg-white dark:bg-[#1a231e] text-[#1e2421]/50 dark:text-slate-500 border border-[#CBCBCB] dark:border-[#2a3830]'
-              }`}>
-                3
-              </div>
-              <span className={`text-[11px] font-semibold mt-1.5 ${phase === 'result' ? 'text-[#174D38] dark:text-emerald-400 font-bold' : 'text-[#1e2421]/60 dark:text-slate-400'}`}>
-                {lang === 'hi' ? '3. योजनाएं' : '3. Schemes'}
-              </span>
-            </div>
-          </div>
+        {/* ── DISCOVERY STEPPER BAR (MATCHING IMAGE 1 DESIGN) ── */}
+        <div className="mb-8">
+          <DiscoveryStepper
+            currentStep={phase === 'input' ? 1 : phase === 'loading' ? 2 : 2}
+            isStep1Done={isStep1Complete}
+            isStep2Done={isStep2Complete}
+            isStep3Done={false}
+          />
         </div>
 
         {/* Header */}
@@ -306,34 +273,53 @@ export default function FindSchemes() {
         {/* RESULT PHASE */}
         {phase === 'result' && extracted && (
           <div className="space-y-5 animate-fade-in-up">
-            {/* Extraction celebration alert */}
-            <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 rounded-xl p-3.5 flex items-center gap-2.5 animate-scale-in">
-              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <Sparkles className="w-4 h-4" />
+            {/* Extraction celebration alert / empty state alert */}
+            {hasExtractedAttributes ? (
+              <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 rounded-xl p-3.5 flex items-center gap-2.5 animate-scale-in">
+                <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-emerald-900 dark:text-emerald-200">
+                    {lang === 'hi' ? 'प्रोफ़ाइल विवरण पहचाने गए!' : 'Profile Attributes Active!'}
+                  </p>
+                  <p className="text-[11px] text-emerald-800/80 dark:text-emerald-300/80">
+                    {lang === 'hi' ? 'नीचे निकाले गए मानदंडों की समीक्षा करें या योजनाएं देखें।' : 'Review active attributes below or proceed directly to matching schemes.'}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-bold text-emerald-900 dark:text-emerald-200">
-                  {lang === 'hi' ? '✨ प्रोफ़ाइल सफलतापूर्वक पहचानी गई!' : '✨ Profile Identified Successfully!'}
-                </p>
-                <p className="text-[11px] text-emerald-800/80 dark:text-emerald-300/80">
-                  {lang === 'hi' ? 'नीचे निकाले गए मानदंडों की समीक्षा करें या योजनाएं देखें।' : 'Review the extracted attributes below or proceed directly to matching schemes.'}
-                </p>
+            ) : (
+              <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 rounded-xl p-3.5 flex items-center gap-2.5 animate-scale-in">
+                <div className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <AlertCircle className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-amber-900 dark:text-amber-200">
+                    {lang === 'hi' ? 'सभी विवरण हटा दिए गए हैं' : 'All Extracted Attributes Removed'}
+                  </p>
+                  <p className="text-[11px] text-amber-800/80 dark:text-amber-300/80">
+                    {lang === 'hi' ? 'कृपया योजना खोजने के लिए प्रोफ़ाइल फिर से दर्ज करें या संपादित करें।' : 'Add or edit your profile details below to discover personalized schemes.'}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-6 shadow-md hover:border-[#174D38] transition-all">
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <h2 className="font-bold text-[#1e2421] dark:text-white text-base">{t.profileExtracted}</h2>
                   <p className="text-xs text-[#1e2421]/60 dark:text-slate-400 mt-0.5">
-                    {lang === 'hi' ? 'गलत? किसी भी विशेषता को हटाएं या पूरी प्रोफ़ाइल संपादित करें।' : 'Incorrect? Remove any attribute or edit your full profile.'}
+                    {hasExtractedAttributes
+                      ? (lang === 'hi' ? 'गलत? किसी भी विशेषता को हटाएं या पूरी प्रोफ़ाइल संपादित करें।' : 'Incorrect? Remove any attribute or edit your full profile.')
+                      : (lang === 'hi' ? 'कोई विशेषता सक्रिय नहीं है। प्रोफ़ाइल फिर से लिखें।' : 'No attributes currently selected. Add attributes or re-describe.')
+                    }
                   </p>
                 </div>
                 <button onClick={handleEditProfile} className="text-sm text-[#174D38] dark:text-emerald-400 hover:underline font-semibold cursor-pointer">
                   {t.editProfile}
                 </button>
               </div>
-              <ProfileChips profile={extracted} onRemove={handleRemoveChip} />
+              <ProfileChips profile={extracted} onRemove={handleRemoveChip} onEdit={() => handleEditProfile()} />
             </div>
 
             <div className="flex items-start gap-2 bg-[#F2F2F2] dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-3.5">
@@ -351,10 +337,17 @@ export default function FindSchemes() {
               <p className="text-xs text-[#1e2421]/70 dark:text-slate-400">{t.privacyNote}</p>
             </div>
 
-            <button onClick={handleFindSchemes} className="btn-primary w-full justify-center text-base py-3.5 shimmer-sweep shadow-xl shadow-[#174D38]/25 group">
-              <span>{t.findMatchingSchemes}</span>
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+            {hasExtractedAttributes ? (
+              <button onClick={handleFindSchemes} className="btn-primary w-full justify-center text-base py-3.5 shadow-xl shadow-[#174D38]/25 group cursor-pointer">
+                <span>{t.findMatchingSchemes}</span>
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            ) : (
+              <button onClick={handleEditProfile} className="btn-secondary w-full justify-center text-base py-3.5 group cursor-pointer border-[#174D38] text-[#174D38] dark:text-emerald-400">
+                <span>{lang === 'hi' ? 'विवरण फिर से जोड़ें' : 'Add Details to Continue'}</span>
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            )}
             <p className="text-center text-xs text-[#1e2421]/60 dark:text-slate-500">{t.disclaimer}</p>
           </div>
         )}
@@ -694,8 +687,8 @@ export default function FindSchemes() {
             </h2>
             <p className="text-xs text-[#1e2421]/60 dark:text-slate-400 mb-8 max-w-sm mx-auto">
               {lang === 'hi'
-                ? 'प्रासंगिक मानदंडों को निकाला जा रहा है ताकि सही योजनाओं से मिलान किया जा सके।'
-                : 'Reading details to match you against verified central & state eligibility criteria.'
+                ? 'प्रासंगिक मानदंडों को निकाला जा रहा है ताकि आपकी प्रोफ़ाइल तैयार की जा सके।'
+                : 'Extracting key criteria from your input to structure your profile.'
               }
             </p>
 
@@ -738,7 +731,7 @@ export default function FindSchemes() {
               <div
                 className="h-full bg-gradient-to-r from-[#174D38] via-emerald-500 to-[#174D38] rounded-full transition-all duration-500 animate-shimmer"
                 style={{
-                  width: loadingStep === 0 ? '45%' : loadingStep === 1 ? '85%' : '100%'
+                  width: loadingStep === 0 ? '50%' : '100%'
                 }}
               />
             </div>
