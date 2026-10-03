@@ -242,7 +242,7 @@ export default function LiveExtractionSimulator() {
 
                 <div className="flex items-center justify-between pt-3 mt-3 border-t border-[#CBCBCB]/40 dark:border-[#2a3830] text-xs text-[#5c6861] dark:text-[#9eada5]">
                   <span className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+                    <span className={`w-2 h-2 rounded-full bg-emerald-500 inline-block ${isPlaying ? 'animate-pulse' : ''}`} />
                     <span>{isPlaying ? (lang === 'hi' ? 'AI विश्लेषक पढ़ रहा है...' : 'AI Parser Analyzing...') : (lang === 'hi' ? 'विश्लेषण संपन्न' : 'Analysis Ready')}</span>
                   </span>
                   <span>{displayedLength} / {fullText.length} {lang === 'hi' ? 'अक्षर' : 'chars'}</span>

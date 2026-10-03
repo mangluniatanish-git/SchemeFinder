@@ -309,7 +309,7 @@ export default function FindSchemes() {
             {/* Extraction celebration alert */}
             <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 rounded-xl p-3.5 flex items-center gap-2.5 animate-scale-in">
               <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '5s' }} />
+                <Sparkles className="w-4 h-4" />
               </div>
               <div>
                 <p className="text-xs font-bold text-emerald-900 dark:text-emerald-200">
@@ -680,17 +680,11 @@ export default function FindSchemes() {
         {/* LOADING PHASE */}
         {phase === 'loading' && (
           <div className="bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-2xl p-8 sm:p-12 text-center shadow-xl animate-scale-in">
-            {/* Animated Dual Rotating Rings with Glowing Core */}
-            <div className="relative w-24 h-24 mx-auto mb-8 flex items-center justify-center">
-              {/* Outer pulsing ring */}
-              <div className="absolute inset-0 rounded-full border-2 border-[#174D38]/30 dark:border-emerald-500/30 animate-ping opacity-60" />
-              {/* Rotating outer dash ring */}
-              <div className="absolute inset-1 rounded-full border-2 border-dashed border-[#174D38] dark:border-emerald-400 animate-spin" style={{ animationDuration: '8s' }} />
-              {/* Reverse rotating inner ring */}
-              <div className="absolute inset-4 rounded-full border-2 border-[#4D1717] dark:border-[#f0a8a8] border-t-transparent animate-spin" style={{ animationDirection: 'reverse', animationDuration: '2.5s' }} />
-              {/* Center icon / core */}
-              <div className="w-10 h-10 rounded-full bg-[#174D38] text-white flex items-center justify-center shadow-lg shadow-[#174D38]/30 animate-pulse">
-                <Sparkles className="w-5 h-5 text-emerald-300" />
+            {/* Clean, calm single-ring loader */}
+            <div className="relative w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full border-3 border-emerald-100 dark:border-emerald-950/60 border-t-[#174D38] dark:border-t-emerald-400 animate-spin" style={{ animationDuration: '1.2s' }} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-[#174D38] dark:text-emerald-400" />
               </div>
             </div>
 

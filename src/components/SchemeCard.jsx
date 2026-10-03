@@ -61,7 +61,7 @@ export default function SchemeCard({ scheme, showRelevance = false }) {
   const missingInfo = matchDetails.filter(d => d.match === 'missing')
 
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl hover:shadow-xl hover:shadow-[#174D38]/10 hover:border-[#174D38] dark:hover:border-emerald-600/70 hover:-translate-y-1 transition-all duration-300 ease-out group shimmer-sweep">
+    <div className="relative overflow-hidden bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl hover:shadow-lg hover:shadow-[#174D38]/8 hover:border-[#174D38] dark:hover:border-emerald-600/70 hover:-translate-y-1 transition-all duration-300 ease-out group">
       {/* Subtle top accent bar */}
       <div className={`h-1 w-full transition-opacity duration-300 ${
         scheme.type === 'central' ? 'bg-[#174D38] opacity-80 group-hover:opacity-100' : 'bg-[#4D1717] opacity-80 group-hover:opacity-100'
@@ -69,8 +69,8 @@ export default function SchemeCard({ scheme, showRelevance = false }) {
 
       <div className="p-5 sm:p-6">
         <div className="flex gap-4">
-          {/* Icon with spin/scale on hover */}
-          <div className={`w-11 h-11 ${style.bg} rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-115 group-hover:rotate-6 transition-all duration-300 shadow-2xs`}>
+          {/* Icon */}
+          <div className={`w-11 h-11 ${style.bg} rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-105 transition-transform duration-250 shadow-2xs`}>
             <Icon className={`w-5 h-5 ${style.color}`} />
           </div>
 
@@ -82,8 +82,8 @@ export default function SchemeCard({ scheme, showRelevance = false }) {
                 {name}
               </h3>
               {relevanceBadge && (
-                <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${relevanceBadge.color} flex-shrink-0 animate-scale-in shadow-2xs flex items-center gap-1`}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
+                <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${relevanceBadge.color} flex-shrink-0 shadow-2xs flex items-center gap-1.5`}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
                   {relevanceBadge.label}
                 </span>
               )}
@@ -120,7 +120,7 @@ export default function SchemeCard({ scheme, showRelevance = false }) {
               </span>
               {scheme.status && scheme.status !== 'open' && (
                 <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${
-                  scheme.status === 'closing_soon' ? 'bg-[#4D1717]/10 text-[#4D1717] dark:bg-red-950/60 dark:text-red-300 border border-[#4D1717]/30 animate-pulse' :
+                  scheme.status === 'closing_soon' ? 'bg-[#4D1717]/10 text-[#4D1717] dark:bg-red-950/60 dark:text-red-300 border border-[#4D1717]/30' :
                   scheme.status === 'closed' ? 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400' :
                   'bg-[#F2F2F2] text-[#1e2421] border border-[#CBCBCB]'
                 }`}>
@@ -136,8 +136,8 @@ export default function SchemeCard({ scheme, showRelevance = false }) {
 
             {/* Benefits */}
             {benefits && (
-              <div className="flex items-start gap-1.5 mb-3 bg-[#F2F2F2] dark:bg-[#141d18] px-3 py-1.5 rounded-lg border border-[#CBCBCB] dark:border-[#2a3830] w-fit transition-transform duration-200 group-hover:translate-x-1">
-                <IndianRupee className="w-3.5 h-3.5 text-[#174D38] dark:text-emerald-400 flex-shrink-0 mt-0.5 animate-bounceSubtle" />
+              <div className="flex items-start gap-1.5 mb-3 bg-[#F2F2F2] dark:bg-[#141d18] px-3 py-1.5 rounded-lg border border-[#CBCBCB] dark:border-[#2a3830] w-fit">
+                <IndianRupee className="w-3.5 h-3.5 text-[#174D38] dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                 <span className="text-sm font-semibold text-[#174D38] dark:text-emerald-300">{benefits}</span>
               </div>
             )}
