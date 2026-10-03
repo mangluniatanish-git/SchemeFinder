@@ -21,7 +21,6 @@ export default function Footer() {
       heading: lang === 'hi' ? 'जानकारी' : 'Learn',
       links: [
         { to: '/how-it-works', label: lang === 'hi' ? 'यह कैसे काम करता है' : 'How It Works' },
-        { to: '/assistant', label: lang === 'hi' ? 'AI सहायक' : 'AI Assistant' },
         { to: '/faq', label: lang === 'hi' ? 'FAQ' : 'FAQ' },
         { to: '/about', label: lang === 'hi' ? 'हमारे बारे में' : 'About' },
         { to: '/contact', label: lang === 'hi' ? 'संपर्क करें' : 'Contact' },

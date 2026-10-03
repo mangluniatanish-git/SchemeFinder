@@ -15,7 +15,6 @@ const TABS = [
   { id: 'describe', icon: FileText, label: 'Describe Yourself', labelHi: 'खुद बताएं' },
   { id: 'form', icon: User, label: 'Quick Form', labelHi: 'त्वरित फ़ॉर्म' },
   { id: 'voice', icon: Mic, label: 'Voice Input', labelHi: 'वॉइस इनपुट' },
-  { id: 'upload', icon: Upload, label: 'Upload CV', labelHi: 'CV अपलोड करें' },
 ]
 
 const QUICK_FORM_FIELDS = [
@@ -322,19 +321,15 @@ export default function FindSchemes() {
               <ProfileChips profile={extracted} onRemove={handleRemoveChip} onEdit={() => handleEditProfile()} />
             </div>
 
-            <div className="flex items-start gap-2 bg-[#F2F2F2] dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-3.5">
-              <CheckCircle2 className="w-4 h-4 text-[#174D38] dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-[#1e2421] dark:text-slate-300">
+            {/* Single subtle trust note */}
+            <div className="flex items-center gap-2 px-1 text-xs text-[#1e2421]/70 dark:text-slate-400">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#174D38] dark:text-emerald-400 shrink-0" />
+              <span>
                 {lang === 'hi'
-                  ? 'हम केवल उन्हीं विशेषताओं का उपयोग करते हैं जो आपने प्रदान की हैं। कोई अनुमान नहीं लगाई गई।'
-                  : 'Only attributes you explicitly provided are used. Nothing is assumed or inferred beyond your description.'
+                  ? 'केवल आपके द्वारा प्रदान किए गए विवरणों का उपयोग किया गया है। डेटा निजी व सुरक्षित है।'
+                  : 'Only your explicit details are used. Data is processed locally and privately.'
                 }
-              </p>
-            </div>
-
-            <div className="flex items-start gap-2 bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-3.5">
-              <Info className="w-4 h-4 text-[#174D38] dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-[#1e2421]/70 dark:text-slate-400">{t.privacyNote}</p>
+              </span>
             </div>
 
             {hasExtractedAttributes ? (
@@ -356,7 +351,7 @@ export default function FindSchemes() {
         {phase === 'input' && (
           <div className="space-y-5">
             {/* Tabs */}
-            <div className="grid grid-cols-4 gap-1.5 bg-[#CBCBCB]/30 dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-1.5">
+            <div className="grid grid-cols-3 gap-1.5 bg-[#CBCBCB]/30 dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-1.5">
               {TABS.map(tab => {
                 const Icon = tab.icon
                 return (
@@ -573,98 +568,6 @@ export default function FindSchemes() {
                     )}
                   </>
                 )}
-              </div>
-            )}
-
-            {/* CV UPLOAD TAB */}
-            {activeTab === 'upload' && (
-              <div className="bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-6 space-y-4">
-                <div className="bg-[#F2F2F2] dark:bg-[#141d18] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-3">
-                  <p className="text-xs text-[#1e2421] dark:text-slate-200">
-                    <strong>{lang === 'hi' ? 'गोपनीयता नोट:' : 'Privacy Note:'}</strong>{' '}
-                    {lang === 'hi'
-                      ? 'आपका दस्तावेज़ केवल जानकारी निकालने के लिए उपयोग किया जाता है। मूल फ़ाइल नहीं रखी जाती।'
-                      : 'Your document is processed only to extract eligibility information. The original file is not retained after processing.'
-                    }
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    {lang === 'hi' ? 'PDF या DOCX अपलोड करें' : 'Upload PDF or DOCX'}
-                    <span className="text-slate-400 dark:text-slate-500 text-xs ml-1">(max 5MB)</span>
-                  </label>
-                  <input
-                    type="file" accept=".pdf,.docx" onChange={handleFileChange}
-                    className="w-full text-sm text-slate-600 dark:text-slate-300 border border-[#CBCBCB] dark:border-[#2a3830] rounded-lg file:mr-3 file:py-2 file:px-4 file:border-0 file:text-sm file:font-medium file:bg-[#F2F2F2] dark:file:bg-[#141d18] file:text-[#174D38] dark:file:text-emerald-400 hover:file:bg-[#CBCBCB]/30 cursor-pointer"
-                  />
-                </div>
-                {uploadFile && (
-                  <div className="flex items-center gap-2.5 bg-[#174D38]/10 dark:bg-[#174D38]/20 border border-[#174D38]/30 rounded-xl p-3.5">
-                    <FileText className="w-4.5 h-4.5 text-[#174D38] dark:text-[#a7d7c5] flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-[#174D38] dark:text-[#a7d7c5] truncate">{uploadFile.name}</p>
-                      <p className="text-xs text-[#5c6861] dark:text-[#9eada5]">{(uploadFile.size / 1024).toFixed(1)} KB • Ready for extraction</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Animated CV Extraction Progress Bar */}
-                {uploadProcessing && (
-                  <div className="my-4 p-5 bg-[#174D38]/5 dark:bg-[#174D38]/15 border border-[#174D38]/20 rounded-2xl space-y-3.5">
-                    <div className="flex items-center justify-between text-xs font-bold text-[#174D38] dark:text-[#a7d7c5]">
-                      <span className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-[#174D38] dark:text-[#a7d7c5]" />
-                        {uploadStage === 'reading' && (lang === 'hi' ? 'दस्तावेज़ की सामग्री पढ़ी जा रही है...' : 'Reading document contents...')}
-                        {uploadStage === 'parsing' && (lang === 'hi' ? 'आयु, स्थान, शिक्षा व श्रेणी निकाली जा रही है...' : 'Extracting age, location, education & category...')}
-                        {uploadStage === 'structuring' && (lang === 'hi' ? 'पात्रता प्रोफ़ाइल चिप्स तैयार की जा रही हैं...' : 'Structuring eligibility profile chips...')}
-                        {uploadStage === 'complete' && (lang === 'hi' ? 'सत्यापन के लिए तैयार!' : 'Ready for verification!')}
-                      </span>
-                      <span>{uploadProgress}%</span>
-                    </div>
-
-                    {/* Progress Track */}
-                    <div className="w-full h-2 bg-[#CBCBCB]/40 dark:bg-[#2a382e] rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#174D38] to-[#256346] dark:from-[#174D38] dark:to-[#a7d7c5] rounded-full transition-all duration-500 ease-out"
-                        style={{ width: `${uploadProgress}%` }}
-                      />
-                    </div>
-
-                    {/* Step Indicators */}
-                    <div className="grid grid-cols-3 gap-2 text-[11px] pt-1 text-[#5c6861] dark:text-[#9eada5]">
-                      <div className={`flex items-center gap-1.5 ${uploadProgress >= 20 ? 'text-[#174D38] dark:text-[#a7d7c5] font-semibold' : ''}`}>
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>{lang === 'hi' ? '1. पढ़ना' : '1. Read File'}</span>
-                      </div>
-                      <div className={`flex items-center gap-1.5 ${uploadProgress >= 55 ? 'text-[#174D38] dark:text-[#a7d7c5] font-semibold' : ''}`}>
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>{lang === 'hi' ? '2. पहचानना' : '2. Parse Info'}</span>
-                      </div>
-                      <div className={`flex items-center gap-1.5 ${uploadProgress >= 85 ? 'text-[#174D38] dark:text-[#a7d7c5] font-semibold' : ''}`}>
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>{lang === 'hi' ? '3. चिप्स बनाना' : '3. Structure'}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {uploadError && (
-                  <div className="flex items-start gap-2 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-lg p-3">
-                    <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-red-700 dark:text-red-300">{uploadError}</p>
-                  </div>
-                )}
-                <button
-                  onClick={handleCVAnalyze}
-                  disabled={!uploadFile || uploadProcessing}
-                  className="btn-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {uploadProcessing ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" /> {lang === 'hi' ? 'दस्तावेज़ संसाधित हो रहा है...' : 'Extracting Profile...'}</>
-                  ) : (
-                    <>{lang === 'hi' ? 'पात्रता प्रोफ़ाइल निकालें' : 'Extract Eligibility Profile'} <ChevronRight className="w-4.5 h-4.5" /></>
-                  )}
-                </button>
               </div>
             )}
           </div>

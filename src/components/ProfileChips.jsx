@@ -47,22 +47,6 @@ export default function ProfileChips({ profile, onRemove, onEdit }) {
           </div>
         ))}
       </div>
-
-      {/* Missing fields (show as grayed out) */}
-      {missing.length > 0 && (
-        <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs text-[#1e2421]/60 dark:text-slate-500 font-medium">{t.notProvided}:</span>
-          {missing.map(({ key, label }) => (
-            <button
-              key={key}
-              onClick={() => onEdit && onEdit(key)}
-              className="inline-flex items-center gap-1 border border-dashed border-[#CBCBCB] dark:border-[#2a3830] text-[#1e2421]/70 dark:text-slate-400 hover:text-[#174D38] dark:hover:text-emerald-300 hover:border-[#174D38] text-xs px-2.5 py-1 rounded-md transition-colors bg-white/60 dark:bg-transparent"
-            >
-              + {label}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   )
 }

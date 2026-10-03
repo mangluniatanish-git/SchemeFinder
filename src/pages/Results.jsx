@@ -73,14 +73,6 @@ export default function Results() {
               <Link to="/find-schemes" className="text-sm text-[#174D38] dark:text-emerald-400 hover:underline font-semibold">
                 {t.editProfileLink} →
               </Link>
-              {profile && (
-                <button
-                  onClick={clearProfile}
-                  className="text-xs text-[#1e2421]/70 dark:text-slate-400 hover:text-[#4D1717] dark:hover:text-white border border-[#CBCBCB] dark:border-[#2a3830] px-2.5 py-1.5 rounded-lg transition-colors bg-white/70 dark:bg-transparent"
-                >
-                  Clear profile
-                </button>
-              )}
             </div>
           </div>
 

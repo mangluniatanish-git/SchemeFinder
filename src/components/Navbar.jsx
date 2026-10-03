@@ -27,7 +27,6 @@ export default function Navbar() {
   const moreLinks = [
     { to: '/categories', label: t.categories },
     { to: '/how-it-works', label: lang === 'hi' ? 'यह कैसे काम करता है' : 'How It Works' },
-    { to: '/assistant', label: lang === 'hi' ? 'AI सहायक' : 'AI Assistant' },
     { to: '/faq', label: t.faq },
     { to: '/about', label: t.about },
   ]
