@@ -7,6 +7,7 @@ import { matchSchemes } from '../utils/schemeMatcher'
 import { CATEGORIES } from '../data/schemes'
 import SchemeCard from '../components/SchemeCard'
 import FilterBar from '../components/FilterBar'
+import AnimatedCounter from '../components/AnimatedCounter'
 
 function buildProfileSummary(profile) {
   if (!profile) return null
@@ -37,29 +38,34 @@ export default function Results() {
   const profileSummary = buildProfileSummary(profile)
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#111814] text-[#1e2421] dark:text-[#f3f5f4] transition-colors duration-200">
       <div className="max-w-5xl mx-auto px-4 py-8">
 
         {/* Header */}
         <div className="mb-6">
-          <p className="text-xs text-slate-500 uppercase tracking-wider font-medium mb-1">{lang === 'hi' ? 'आपके परिणाम' : 'Your Results'}</p>
+          <p className="text-xs text-[#174D38] dark:text-emerald-400 uppercase tracking-wider font-semibold mb-1">
+            {lang === 'hi' ? 'आपके परिणाम' : 'Your Results'}
+          </p>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 className="text-xl font-bold text-slate-900">
-                {allMatched.length} {t.schemesFound}
+              <h1 className="text-xl sm:text-2xl font-bold text-[#1e2421] dark:text-white flex items-center gap-2">
+                <span className="text-[#174D38] dark:text-emerald-400">
+                  <AnimatedCounter value={allMatched.length} />
+                </span>
+                <span>{t.schemesFound}</span>
               </h1>
               {profileSummary && (
-                <p className="text-sm text-slate-500 mt-0.5">{t.basedOnProfile}</p>
+                <p className="text-sm text-[#1e2421]/70 dark:text-slate-400 mt-0.5">{t.basedOnProfile}</p>
               )}
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
-              <Link to="/find-schemes" className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+              <Link to="/find-schemes" className="text-sm text-[#174D38] dark:text-emerald-400 hover:underline font-semibold">
                 {t.editProfileLink} →
               </Link>
               {profile && (
                 <button
                   onClick={clearProfile}
-                  className="text-xs text-slate-400 hover:text-slate-600 border border-slate-200 px-2.5 py-1.5 rounded"
+                  className="text-xs text-[#1e2421]/70 dark:text-slate-400 hover:text-[#4D1717] dark:hover:text-white border border-[#CBCBCB] dark:border-[#2a3830] px-2.5 py-1.5 rounded-lg transition-colors bg-white/70 dark:bg-transparent"
                 >
                   Clear profile
                 </button>
@@ -69,19 +75,19 @@ export default function Results() {
 
           {/* Profile summary bar */}
           {profileSummary && (
-            <div className="mt-3 bg-blue-50 border border-blue-200 rounded px-4 py-2.5 flex items-center justify-between gap-3">
-              <p className="text-sm text-blue-800 font-medium truncate">{profileSummary}</p>
-              <Link to="/find-schemes" className="text-xs text-blue-600 hover:text-blue-800 flex-shrink-0">
+            <div className="mt-3 bg-[#F2F2F2] dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl px-4 py-2.5 flex items-center justify-between gap-3 shadow-xs">
+              <p className="text-sm text-[#1e2421] dark:text-slate-200 font-medium truncate">{profileSummary}</p>
+              <Link to="/find-schemes" className="text-xs text-[#174D38] dark:text-emerald-400 hover:underline flex-shrink-0 font-semibold">
                 {t.editProfileLink}
               </Link>
             </div>
           )}
 
           {!profile && (
-            <div className="mt-3 bg-amber-50 border border-amber-200 rounded px-4 py-3">
-              <p className="text-sm text-amber-800">
+            <div className="mt-3 bg-[#F2F2F2] dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl px-4 py-3 shadow-xs">
+              <p className="text-sm text-[#1e2421] dark:text-slate-300">
                 {t.basedOnProfile}{' '}
-                <Link to="/find-schemes" className="font-semibold underline">
+                <Link to="/find-schemes" className="font-semibold text-[#174D38] dark:text-emerald-400 underline">
                   {t.findSchemes}
                 </Link>
               </p>
@@ -90,16 +96,16 @@ export default function Results() {
         </div>
 
         {/* Search + Filters */}
-        <div className="bg-white border border-slate-200 rounded p-4 mb-5 space-y-4">
+        <div className="bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-4.5 mb-5 space-y-4 shadow-xs">
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#174D38] dark:text-emerald-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder={t.searchPlaceholder}
-              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+              className="w-full bg-[#F2F2F2] dark:bg-[#141d18] border border-[#CBCBCB] dark:border-[#2a3830] text-[#1e2421] dark:text-slate-100 text-sm rounded-lg pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#174D38] focus:border-transparent transition-colors"
             />
           </div>
 
@@ -115,21 +121,26 @@ export default function Results() {
 
         {/* Results */}
         {visibleSchemes.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded p-12 text-center">
-            <p className="text-slate-500">{t.noResults}</p>
-            <button onClick={() => { setSearchQuery(''); setActiveType('all'); setActiveCategory(null) }} className="mt-3 text-sm text-blue-600 hover:text-blue-800">
+          <div className="bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-12 text-center shadow-xs">
+            <p className="text-[#1e2421]/70 dark:text-slate-400">{t.noResults}</p>
+            <button onClick={() => { setSearchQuery(''); setActiveType('all'); setActiveCategory(null) }} className="mt-3 text-sm text-[#174D38] dark:text-emerald-400 hover:underline font-semibold">
               Clear filters
             </button>
           </div>
         ) : (
           <>
             <div className="space-y-3">
-              {visibleSchemes.map(scheme => (
-                <SchemeCard
+              {visibleSchemes.map((scheme, idx) => (
+                <div
                   key={scheme.id}
-                  scheme={scheme}
-                  showRelevance={!!profile}
-                />
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${Math.min(idx, 7) * 70}ms` }}
+                >
+                  <SchemeCard
+                    scheme={scheme}
+                    showRelevance={!!profile}
+                  />
+                </div>
               ))}
             </div>
 
@@ -147,8 +158,8 @@ export default function Results() {
         )}
 
         {/* Disclaimer */}
-        <div className="mt-8 bg-slate-100 border border-slate-200 rounded p-4">
-          <p className="text-xs text-slate-500 leading-relaxed">{t.disclaimer}</p>
+        <div className="mt-8 bg-white dark:bg-[#202226] border border-[#CBCBCB] dark:border-slate-800 rounded-xl p-4 shadow-xs">
+          <p className="text-xs text-[#4A4A4A]/70 dark:text-slate-400 leading-relaxed">{t.disclaimer}</p>
         </div>
       </div>
     </div>

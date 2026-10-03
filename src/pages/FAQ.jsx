@@ -60,17 +60,17 @@ function FAQItem({ item, lang }) {
   const answer = lang === 'hi' ? item.aHi : item.a
 
   return (
-    <div className="bg-white border border-slate-200 rounded">
+    <div className="bg-white dark:bg-[#16201a] border border-[#CBCBCB] dark:border-[#2a382e] rounded-xl overflow-hidden shadow-2xs hover:border-[#174D38]/50 dark:hover:border-emerald-600/50 transition-all duration-200">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-4 p-5 text-left"
+        className="w-full flex items-center justify-between gap-4 p-5 text-left transition-colors hover:bg-[#F2F2F2]/50 dark:hover:bg-[#1f2b23]/50 cursor-pointer"
       >
-        <span className="font-semibold text-slate-900 text-sm">{question}</span>
-        {open ? <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />}
+        <span className="font-semibold text-[#1e2421] dark:text-[#f3f5f4] text-sm">{question}</span>
+        <ChevronDown className={`w-4 h-4 text-[#174D38] dark:text-[#a7d7c5] flex-shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : 'rotate-0'}`} />
       </button>
       {open && (
-        <div className="px-5 pb-5 border-t border-slate-100 pt-4">
-          <p className="text-slate-600 text-sm leading-relaxed">{answer}</p>
+        <div className="px-5 pb-5 border-t border-[#CBCBCB]/40 dark:border-[#2a382e] pt-4 animate-fade-in">
+          <p className="text-[#5c6861] dark:text-[#9eada5] text-sm leading-relaxed">{answer}</p>
         </div>
       )}
     </div>
@@ -81,11 +81,11 @@ export default function FAQ() {
   const { t, lang } = useLang()
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="bg-white border-b border-slate-200 py-8 px-4">
+    <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#111814]">
+      <div className="bg-white dark:bg-[#16201a] border-b border-[#CBCBCB] dark:border-[#2a382e] py-8 px-4">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{t.faqTitle}</h1>
-          <p className="text-slate-600">{t.faqSubtitle}</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e2421] dark:text-[#f3f5f4] mb-2">{t.faqTitle}</h1>
+          <p className="text-[#5c6861] dark:text-[#9eada5]">{t.faqSubtitle}</p>
         </div>
       </div>
 
@@ -96,14 +96,14 @@ export default function FAQ() {
           ))}
         </div>
 
-        <div className="mt-10 bg-blue-50 border border-blue-200 rounded p-6 text-center">
-          <p className="font-semibold text-slate-900 mb-2">
+        <div className="mt-10 bg-white dark:bg-[#16201a] border border-[#CBCBCB] dark:border-[#2a382e] rounded-xl p-6 text-center shadow-xs">
+          <p className="font-bold text-[#1e2421] dark:text-[#f3f5f4] mb-2">
             {lang === 'hi' ? 'अभी भी कोई सवाल है?' : 'Still have questions?'}
           </p>
-          <p className="text-sm text-slate-600 mb-4">
+          <p className="text-sm text-[#5c6861] dark:text-[#9eada5] mb-4">
             {lang === 'hi'
               ? 'Find Schemes पेज पर जाएं और अपना प्रोफ़ाइल बनाएं।'
-              : 'Head to Find Schemes and create your profile to get started.'
+              : 'Head to Find Schemes and describe your profile to get instant matches.'
             }
           </p>
           <Link to="/find-schemes" className="btn-primary inline-flex mx-auto">

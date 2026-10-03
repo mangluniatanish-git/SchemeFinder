@@ -63,20 +63,20 @@ export default function AllSchemes() {
     : null
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#111814]">
       {/* Page header */}
-      <div className="bg-white border-b border-slate-200 py-8 px-4">
+      <div className="bg-white dark:bg-[#1a231e] border-b border-[#CBCBCB] dark:border-[#2a3830] py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <p className="text-xs text-slate-500 uppercase tracking-wider font-medium mb-1">
+          <p className="text-xs text-[#174D38] dark:text-emerald-400 uppercase tracking-wider font-semibold mb-1">
             {lang === 'hi' ? 'सभी योजनाएं' : 'All Schemes'}
           </p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#1e2421] dark:text-slate-100 mb-1">
             {activeCategoryLabel
               ? (lang === 'hi' ? `${activeCategoryLabel} योजनाएं` : `${activeCategoryLabel} Schemes`)
               : (lang === 'hi' ? 'सभी सरकारी योजनाएं' : 'All Government Schemes')
             }
           </h1>
-          <p className="text-slate-500 text-sm">
+          <p className="text-slate-500 dark:text-slate-400 text-sm">
             {filtered.length} {lang === 'hi' ? 'योजनाएं उपलब्ध' : 'schemes available'}
           </p>
         </div>
@@ -87,9 +87,9 @@ export default function AllSchemes() {
 
           {/* Sidebar filters */}
           <aside className="lg:w-56 flex-shrink-0">
-            <div className="bg-white border border-slate-200 rounded p-4 space-y-5 sticky top-20">
+            <div className="bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-4 space-y-5 sticky top-20 shadow-sm">
               <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
                   {lang === 'hi' ? 'प्रकार' : 'Type'}
                 </p>
                 <div className="space-y-1">
@@ -101,10 +101,10 @@ export default function AllSchemes() {
                     <button
                       key={f.id}
                       onClick={() => setActiveType(f.id)}
-                      className={`w-full text-left text-sm px-3 py-2 rounded transition-colors ${
+                      className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors ${
                         activeType === f.id
-                          ? 'bg-blue-50 text-blue-700 font-medium'
-                          : 'text-slate-600 hover:bg-slate-50'
+                          ? 'bg-[#174D38] text-white font-semibold'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-[#F2F2F2] dark:hover:bg-[#232f29]'
                       }`}
                     >
                       {f.label}
@@ -115,13 +115,13 @@ export default function AllSchemes() {
 
               {activeType === 'state' && (
                 <div>
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                     {lang === 'hi' ? 'राज्य' : 'State'}
                   </p>
                   <select
                     value={selectedState}
                     onChange={e => setSelectedState(e.target.value)}
-                    className="w-full text-sm border border-slate-200 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full text-sm bg-white dark:bg-[#141d18] text-[#1e2421] dark:text-slate-100 border border-[#CBCBCB] dark:border-[#2a3830] rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-[#174D38]"
                   >
                     {INDIAN_STATES.map(s => <option key={s}>{s}</option>)}
                   </select>
@@ -129,14 +129,14 @@ export default function AllSchemes() {
               )}
 
               <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
                   {lang === 'hi' ? 'श्रेणी' : 'Category'}
                 </p>
                 <div className="space-y-1">
                   <button
                     onClick={() => setActiveCategory(null)}
-                    className={`w-full text-left text-sm px-3 py-2 rounded transition-colors ${
-                      !activeCategory ? 'bg-blue-50 text-blue-700 font-medium' : 'text-slate-600 hover:bg-slate-50'
+                    className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors ${
+                      !activeCategory ? 'bg-[#4D1717] text-[#F2F2F2] font-semibold' : 'text-slate-600 dark:text-slate-300 hover:bg-[#F2F2F2] dark:hover:bg-[#232f29]'
                     }`}
                   >
                     {t.all}
@@ -145,8 +145,8 @@ export default function AllSchemes() {
                     <button
                       key={cat.id}
                       onClick={() => setActiveCategory(cat.id === activeCategory ? null : cat.id)}
-                      className={`w-full text-left text-sm px-3 py-2 rounded transition-colors ${
-                        activeCategory === cat.id ? 'bg-blue-50 text-blue-700 font-medium' : 'text-slate-600 hover:bg-slate-50'
+                      className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors ${
+                        activeCategory === cat.id ? 'bg-[#4D1717] text-[#F2F2F2] font-semibold' : 'text-slate-600 dark:text-slate-300 hover:bg-[#F2F2F2] dark:hover:bg-[#232f29]'
                       }`}
                     >
                       {lang === 'hi' ? cat.labelHi : cat.label}
@@ -161,23 +161,23 @@ export default function AllSchemes() {
           <div className="flex-1 min-w-0">
             {/* Search */}
             <div className="relative mb-5">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#174D38] dark:text-emerald-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t.searchPlaceholder}
-                className="w-full bg-white border border-slate-200 text-slate-700 text-sm rounded pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] text-[#1e2421] dark:text-slate-100 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#174D38] shadow-sm"
               />
             </div>
 
             {/* Results */}
             {visible.length === 0 ? (
-              <div className="bg-white border border-slate-200 rounded p-10 text-center">
-                <p className="text-slate-500">{t.noResults}</p>
+              <div className="bg-white dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-xl p-10 text-center shadow-sm">
+                <p className="text-slate-500 dark:text-slate-400">{t.noResults}</p>
                 <button
                   onClick={() => { setSearchQuery(''); setActiveType('all'); setActiveCategory(null) }}
-                  className="mt-3 text-sm text-blue-600"
+                  className="mt-3 text-sm text-[#174D38] dark:text-emerald-400 font-semibold hover:underline"
                 >
                   {lang === 'hi' ? 'फ़िल्टर साफ करें' : 'Clear filters'}
                 </button>

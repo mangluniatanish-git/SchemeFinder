@@ -21,17 +21,17 @@ const values = [
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-slate-50 py-16 px-4">
+    <div className="min-h-screen bg-[#F2F2F2] dark:bg-[#111814] py-16 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Hero */}
         <div className="text-center mb-14">
-          <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-md shadow-blue-200">
-            <Compass className="w-8 h-8 text-white" strokeWidth={2.5} />
+          <div className="w-16 h-16 bg-[#174D38] dark:bg-[#174D38] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-md shadow-[#174D38]/20">
+            <Compass className="w-8 h-8 text-[#F2F2F2]" strokeWidth={2.5} />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1e2421] dark:text-slate-100 tracking-tight mb-4">
             About SchemeFinder
           </h1>
-          <p className="text-slate-500 text-base leading-relaxed max-w-xl mx-auto">
+          <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed max-w-xl mx-auto">
             India has hundreds of government welfare schemes — but most citizens don't know 
             which ones they qualify for. SchemeFinder bridges that gap with a simple, 
             personalized discovery experience.
@@ -41,22 +41,22 @@ export default function About() {
         {/* Values */}
         <div className="space-y-4 mb-12">
           {values.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex gap-5">
-              <div className="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Icon className="w-5.5 h-5.5 text-blue-600" />
+            <div key={title} className="bg-white dark:bg-[#1a231e] rounded-2xl border border-[#CBCBCB] dark:border-[#2a3830] shadow-sm p-6 flex gap-5">
+              <div className="w-11 h-11 bg-[#F2F2F2] dark:bg-[#174D38]/20 border border-[#CBCBCB]/60 dark:border-[#2a3830] rounded-xl flex items-center justify-center flex-shrink-0">
+                <Icon className="w-5.5 h-5.5 text-[#174D38] dark:text-emerald-400" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-base mb-1">{title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-bold text-[#1e2421] dark:text-slate-100 text-base mb-1">{title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{desc}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Disclaimer box */}
-        <div className="bg-amber-50 border border-amber-100 rounded-2xl p-6 mb-10">
-          <h3 className="font-bold text-amber-900 text-sm mb-2">Important Disclaimer</h3>
-          <p className="text-amber-700 text-sm leading-relaxed">
+        <div className="bg-[#F2F2F2] dark:bg-[#1a231e] border border-[#CBCBCB] dark:border-[#2a3830] rounded-2xl p-6 mb-10 shadow-sm">
+          <h3 className="font-bold text-[#4D1717] dark:text-[#f0a8a8] text-sm mb-2">Important Disclaimer</h3>
+          <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
             SchemeFinder is an informational discovery tool only. We do not determine, confirm, 
             or guarantee eligibility. Final eligibility for any government scheme is determined 
             solely by the respective government authority. Always verify information from official 
