@@ -8,7 +8,7 @@
 
 ---
 
-## Description
+## --Description
 
 **SchemeFinder** is a personalized civic intelligence web application designed to bridge the gap between Indian citizens and government welfare schemes. 
 
@@ -16,7 +16,7 @@ Instead of searching through fragmented government portals and reading complex e
 
 ---
 
-## Requirements
+## --Requirements
 
 Ensure you have the following installed on your machine before running the application:
 
@@ -26,7 +26,7 @@ Ensure you have the following installed on your machine before running the appli
 
 ---
 
-## Installation
+## --Installation
 
 1. **Clone the repository:**
    ```bash
@@ -41,7 +41,7 @@ Ensure you have the following installed on your machine before running the appli
 
 ---
 
-## Usage
+## --Usage
 
 ### Development Mode
 Start the local development server with Hot Module Replacement (HMR):
