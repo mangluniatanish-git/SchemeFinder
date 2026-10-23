@@ -8,7 +8,7 @@ import ProfileChips from '../components/ProfileChips'
 import DiscoveryStepper from '../components/DiscoveryStepper'
 import { SAMPLE_PROFILES } from '../data/sampleProfiles'
 
-const EXAMPLE_EN = `I am a 22-year-old student from Mumbai, Maharashtra studying B.Tech Computer Engineering. My family's annual income is around ₹3.5 lakh per year. I belong to the OBC category and I am interested in scholarships and skill development opportunities.`
+const EXAMPLE_EN = `I am a 22-year-old Student from Mumbai, Maharashtra studying B.Tech Computer Engineering. My family's annual income is around ₹3.5 lakh per year. I belong to the OBC category and I am interested in scholarships and skill development opportunities.`
 const EXAMPLE_HI = `मैं महाराष्ट्र के मुंबई का 22 वर्षीय छात्र हूं और कंप्यूटर इंजीनियरिंग में बी.टेक कर रहा हूं। मेरे परिवार की वार्षिक आय लगभग ₹3.5 लाख रुपये है। मैं OBC श्रेणी से हूं और मुझे छात्रवृत्ति तथा कौशल विकास योजनाओं में रुचि है।`
 
 const TABS = [
@@ -179,7 +179,7 @@ export default function FindSchemes() {
     const resumeText = `Profile extracted from uploaded resume ${uploadFile.name}. 23 year old college graduate in Maharashtra, family income ₹2.5 lakh, belonging to OBC category seeking government employment, higher education scholarship, and skill certification schemes.`
     const parsed = parseProfile(resumeText)
     if (!parsed.education) parsed.education = 'Graduate'
-    if (!parsed.occupation) parsed.occupation = 'student'
+    if (!parsed.occupation) parsed.occupation = 'Student'
     if (!parsed.age) parsed.age = 23
     if (!parsed.state) parsed.state = 'Maharashtra'
 
