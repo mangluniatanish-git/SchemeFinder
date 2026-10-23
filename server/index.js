@@ -103,29 +103,30 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 // ─── Start Server ─────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log('');
-  console.log('╔═══════════════════════════════════════════════════╗');
-  console.log('║         SchemeFinder API Server                   ║');
-  console.log('╠═══════════════════════════════════════════════════╣');
-  console.log(`║  Port     : ${PORT.toString().padEnd(37)}║`);
-  console.log(`║  Env      : ${NODE_ENV.padEnd(37)}║`);
-  console.log(`║  DB Mode  : ${(process.env.MONGODB_URI ? 'MongoDB' : 'DEMO (no DB)').padEnd(37)}║`);
-  console.log(`║  Health   : http://localhost:${PORT}/api/health${' '.repeat(Math.max(0, 10 - PORT.toString().length))}║`);
-  console.log('╚═══════════════════════════════════════════════════╝');
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log('');
+    console.log('╔═══════════════════════════════════════════════════╗');
+    console.log('║         SchemeFinder API Server                   ║');
+    console.log('╠═══════════════════════════════════════════════════╣');
+    console.log(`║  Port     : ${PORT.toString().padEnd(37)}║`);
+    console.log(`║  Env      : ${NODE_ENV.padEnd(37)}║`);
+    console.log(`║  DB Mode  : ${(process.env.MONGODB_URI ? 'MongoDB' : 'DEMO (no DB)').padEnd(37)}║`);
+    console.log(`║  Health   : http://localhost:${PORT}/api/health${' '.repeat(Math.max(0, 10 - PORT.toString().length))}║`);
+    console.log('╚═══════════════════════════════════════════════════╝');
 
-  if (!process.env.MONGODB_URI) {
-    console.warn('\n⚠️  DEMO MODE: MONGODB_URI not set. Using in-memory seed data.');
-    console.warn('   Set MONGODB_URI in server/.env to enable full database features.\n');
-  }
-  if (!process.env.JWT_SECRET) {
-    console.warn('⚠️  AUTH DISABLED: JWT_SECRET not set. Auth routes will return 503.');
-    console.warn('   Set JWT_SECRET in server/.env to enable authentication.\n');
-  }
-  if (!process.env.AI_API_KEY) {
-    console.warn('⚠️  AI MOCK MODE: AI_API_KEY not set. Using rule-based profile extraction.');
-    console.warn('   Set AI_API_KEY, AI_PROVIDER, AI_MODEL in server/.env for AI features.\n');
-  }
-});
+    if (!process.env.MONGODB_URI) {
+      console.warn('\n⚠️  DEMO MODE: MONGODB_URI not set.');
+    }
 
-module.exports = app; // For testing
+    if (!process.env.JWT_SECRET) {
+      console.warn('⚠️  AUTH DISABLED: JWT_SECRET not set.');
+    }
+
+    if (!process.env.AI_API_KEY) {
+      console.warn('⚠️  AI MOCK MODE: AI_API_KEY not set.');
+    }
+  });
+}
+
+module.exports = app;
